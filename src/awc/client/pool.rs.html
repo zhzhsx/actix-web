@@ -897,7 +897,7 @@
                 <span class="prelude-val">None</span> =&gt; {
                     <span class="kw">let</span> (<span class="ident">io</span>, <span class="ident">proto</span>) <span class="op">=</span> <span class="ident">connector</span>.<span class="ident">call</span>(<span class="ident">req</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
-                    <span class="comment">// TODO: remove when http3 is added in support.</span>
+                    <span class="comment">// NOTE: remove when http3 is added in support.</span>
                     <span class="macro">assert!</span>(<span class="ident">proto</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Protocol::Http3</span>);
 
                     <span class="kw">if</span> <span class="ident">proto</span> <span class="op">==</span> <span class="ident">Protocol::Http1</span> {

@@ -340,6 +340,25 @@
 <span id="333">333</span>
 <span id="334">334</span>
 <span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::{
@@ -349,14 +368,35 @@
 };
 <span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>};
-
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::CustomizeResponder</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>};
 
 <span class="doccomment">/// Trait implemented by types that can be converted to an HTTP response.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Any types that implement this trait can be used in the return type of a handler.</span>
-<span class="comment">// # TODO: more about implementation notes and foreign impls</span>
+<span class="doccomment">/// Any types that implement this trait can be used in the return type of a handler. Since handlers</span>
+<span class="doccomment">/// will only have one return type, it is idiomatic to use opaque return types `-&gt; impl Responder`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Implementations</span>
+<span class="doccomment">/// It is often not required to implement `Responder` for your own types due to a broad base of</span>
+<span class="doccomment">/// built-in implementations:</span>
+<span class="doccomment">/// - `HttpResponse` and `HttpResponseBuilder`</span>
+<span class="doccomment">/// - `Option&lt;R&gt;` where `R: Responder`</span>
+<span class="doccomment">/// - `Result&lt;R, E&gt;` where `R: Responder` and [`E: ResponseError`](crate::ResponseError)</span>
+<span class="doccomment">/// - `(R, StatusCode) where `R: Responder`</span>
+<span class="doccomment">/// - `&amp;&#39;static str`, `String`, `&amp;&#39;_ String`, `Cow&lt;&#39;_, str&gt;`, [`ByteString`](bytestring::ByteString)</span>
+<span class="doccomment">/// - `&amp;&#39;static [u8]`, `Vec&lt;u8&gt;`, `Bytes`, `BytesMut`</span>
+<span class="doccomment">/// - [`Json&lt;T&gt;`](crate::web::Json) and [`Form&lt;T&gt;`](crate::web::Form) where `T: Serialize`</span>
+<span class="doccomment">/// - [`Either&lt;L, R&gt;`](crate::web::Either) where `L: Serialize` and `R: Serialize`</span>
+<span class="doccomment">/// - [`CustomizeResponder&lt;R&gt;`]</span>
+<span class="doccomment">/// - [`actix_files::NamedFile`](https://docs.rs/actix-files/latest/actix_files/struct.NamedFile.html)</span>
+<span class="doccomment">/// - [Experimental responders from `actix-web-lab`](https://docs.rs/actix-web-lab/latest/actix_web_lab/respond/index.html)</span>
+<span class="doccomment">/// - Third party integrations may also have implemented `Responder` where appropriate. For example,</span>
+<span class="doccomment">///   HTML templating engines.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Customizing Responder Output</span>
+<span class="doccomment">/// Calling [`.customize()`](Responder::customize) on any responder type will wrap it in a</span>
+<span class="doccomment">/// [`CustomizeResponder`] capable of overriding various parts of the response such as the status</span>
+<span class="doccomment">/// code and header map.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Responder</span> {
     <span class="kw">type</span> <span class="ident">Body</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>;
 
@@ -365,7 +405,7 @@
 
     <span class="doccomment">/// Wraps responder to allow alteration of its response.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [`CustomizeResponder`] docs for its capabilities.</span>
+    <span class="doccomment">/// See [`CustomizeResponder`] docs for more details on its capabilities.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">/// ```</span>
@@ -426,11 +466,8 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Responder</span>,
-{
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">EitherBody</span><span class="op">&lt;</span><span class="ident">T::Body</span><span class="op">&gt;</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Responder</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">EitherBody</span><span class="op">&lt;</span><span class="ident">R::Body</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">HttpRequest</span>) -&gt; <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Body</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
@@ -440,12 +477,12 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">E</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Responder</span>,
+    <span class="ident">R</span>: <span class="ident">Responder</span>,
     <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">EitherBody</span><span class="op">&lt;</span><span class="ident">T::Body</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">EitherBody</span><span class="op">&lt;</span><span class="ident">R::Body</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">HttpRequest</span>) -&gt; <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Body</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
@@ -455,8 +492,8 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Responder</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> (<span class="ident">T</span>, <span class="ident">StatusCode</span>) {
-    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">T::Body</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Responder</span><span class="op">&gt;</span> <span class="ident">Responder</span> <span class="kw">for</span> (<span class="ident">R</span>, <span class="ident">StatusCode</span>) {
+    <span class="kw">type</span> <span class="ident">Body</span> <span class="op">=</span> <span class="ident">R::Body</span>;
 
     <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">HttpRequest</span>) -&gt; <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Body</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">respond_to</span>(<span class="ident">req</span>);
@@ -489,6 +526,7 @@
 
 <span class="macro">impl_responder_by_forward_into_base_response!</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>);
 <span class="macro">impl_responder_by_forward_into_base_response!</span>(<span class="ident">String</span>);
+<span class="macro">impl_responder_by_forward_into_base_response!</span>(<span class="ident">bytestring::ByteString</span>);
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_into_string_responder</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">res</span>:<span class="ident">ty</span>) =&gt; {

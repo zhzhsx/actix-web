@@ -93,7 +93,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Off-The-Shelf Test Services</span>
 <span class="doccomment">//! - [`ok_service`]</span>
-<span class="doccomment">//! - [`simple_service`]</span>
+<span class="doccomment">//! - [`status_service`]</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Calling Test Service</span>
 <span class="doccomment">//! - [`TestRequest`]</span>
@@ -115,7 +115,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::test_request::TestRequest</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::test_services</span>::{<span class="ident">default_service</span>, <span class="ident">ok_service</span>, <span class="ident">simple_service</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::test_services</span>::{<span class="ident">default_service</span>, <span class="ident">ok_service</span>, <span class="ident">simple_service</span>, <span class="ident">status_service</span>};
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::test_utils</span>::{
     <span class="ident">call_and_read_body</span>, <span class="ident">call_and_read_body_json</span>, <span class="ident">call_service</span>, <span class="ident">init_service</span>, <span class="ident">read_body</span>,
