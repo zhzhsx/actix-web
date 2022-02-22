@@ -271,6 +271,14 @@
 <span id="264">264</span>
 <span id="265">265</span>
 <span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Error and Result module</span>
 
 <span class="comment">// This is meant to be a glob import of the whole error module except for `Error`. Rustdoc can&#39;t yet</span>
@@ -279,7 +287,7 @@
 <span class="comment">//</span>
 <span class="comment">// See &lt;https://github.com/rust-lang/rust/issues/83375&gt;</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::error</span>::{
-    <span class="ident">BlockingError</span>, <span class="ident">ContentTypeError</span>, <span class="ident">DispatchError</span>, <span class="ident">HttpError</span>, <span class="ident">ParseError</span>, <span class="ident">PayloadError</span>,
+    <span class="ident">ContentTypeError</span>, <span class="ident">DispatchError</span>, <span class="ident">HttpError</span>, <span class="ident">ParseError</span>, <span class="ident">PayloadError</span>,
 };
 
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>};
@@ -305,6 +313,14 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This type alias is generally used to avoid writing out `actix_http::Error` directly.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+
+<span class="doccomment">/// An error representing a problem running a blocking task on a thread pool.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
+<span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Blocking thread pool is shut down unexpectedly&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BlockingError</span>;
+
+<span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::error::BlockingError</span> {}
 
 <span class="doccomment">/// Errors which can occur when attempting to generate resource uri.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>

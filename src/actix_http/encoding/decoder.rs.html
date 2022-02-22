@@ -299,6 +299,16 @@
 <span id="292">292</span>
 <span id="293">293</span>
 <span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Stream decoders.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -320,7 +330,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">encoding::Writer</span>,
-    <span class="ident">error</span>::{<span class="ident">BlockingError</span>, <span class="ident">PayloadError</span>},
+    <span class="ident">error::PayloadError</span>,
     <span class="ident">header</span>::{<span class="ident">ContentEncoding</span>, <span class="ident">HeaderMap</span>, <span class="ident">CONTENT_ENCODING</span>},
 };
 
@@ -348,14 +358,17 @@
             <span class="ident">ContentEncoding::Brotli</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">ContentDecoder::Brotli</span>(<span class="ident">Box::new</span>(
                 <span class="ident">brotli::DecompressorWriter::new</span>(<span class="ident">Writer::new</span>(), <span class="number">8_096</span>),
             ))),
+
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-gzip&quot;</span>)]</span>
             <span class="ident">ContentEncoding::Deflate</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">ContentDecoder::Deflate</span>(<span class="ident">Box::new</span>(
                 <span class="ident">ZlibDecoder::new</span>(<span class="ident">Writer::new</span>()),
             ))),
+
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-gzip&quot;</span>)]</span>
             <span class="ident">ContentEncoding::Gzip</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">ContentDecoder::Gzip</span>(<span class="ident">Box::new</span>(<span class="ident">GzDecoder::new</span>(
                 <span class="ident">Writer::new</span>(),
             )))),
+
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-zstd&quot;</span>)]</span>
             <span class="ident">ContentEncoding::Zstd</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">ContentDecoder::Zstd</span>(<span class="ident">Box::new</span>(
                 <span class="ident">ZstdDecoder::new</span>(<span class="ident">Writer::new</span>()).<span class="ident">expect</span>(
@@ -399,8 +412,12 @@
 
         <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">fut</span>) <span class="op">=</span> <span class="ident">this</span>.<span class="ident">fut</span> {
-                <span class="kw">let</span> (<span class="ident">chunk</span>, <span class="ident">decoder</span>) <span class="op">=</span>
-                    <span class="macro">ready!</span>(<span class="ident">Pin::new</span>(<span class="ident">fut</span>).<span class="ident">poll</span>(<span class="ident">cx</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">BlockingError</span>)<span class="question-mark">?</span><span class="question-mark">?</span>;
+                <span class="kw">let</span> (<span class="ident">chunk</span>, <span class="ident">decoder</span>) <span class="op">=</span> <span class="macro">ready!</span>(<span class="ident">Pin::new</span>(<span class="ident">fut</span>).<span class="ident">poll</span>(<span class="ident">cx</span>)).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+                    <span class="ident">PayloadError::Io</span>(<span class="ident">io::Error::new</span>(
+                        <span class="ident">io::ErrorKind::Other</span>,
+                        <span class="string">&quot;Blocking task was cancelled unexpectedly&quot;</span>,
+                    ))
+                })<span class="question-mark">?</span><span class="question-mark">?</span>;
 
                 <span class="kw-2">*</span><span class="ident">this</span>.<span class="ident">decoder</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">decoder</span>);
                 <span class="ident">this</span>.<span class="ident">fut</span>.<span class="ident">take</span>();
@@ -460,10 +477,13 @@
 <span class="kw">enum</span> <span class="ident">ContentDecoder</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-gzip&quot;</span>)]</span>
     <span class="ident">Deflate</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ZlibDecoder</span><span class="op">&lt;</span><span class="ident">Writer</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-gzip&quot;</span>)]</span>
     <span class="ident">Gzip</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">GzDecoder</span><span class="op">&lt;</span><span class="ident">Writer</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-brotli&quot;</span>)]</span>
     <span class="ident">Brotli</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">brotli::DecompressorWriter</span><span class="op">&lt;</span><span class="ident">Writer</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+
     <span class="comment">// We need explicit &#39;static lifetime here because ZstdDecoder need lifetime</span>
     <span class="comment">// argument, and we use `spawn_blocking` in `Decoder::poll_next` that require `FnOnce() -&gt; R + Send + &#39;static`</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compress-zstd&quot;</span>)]</span>
