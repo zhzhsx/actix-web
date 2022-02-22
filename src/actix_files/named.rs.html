@@ -732,18 +732,18 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">/// ```ignore</span>
+    <span class="doccomment">/// use std::{</span>
+    <span class="doccomment">///     io::{self, Write as _},</span>
+    <span class="doccomment">///     env,</span>
+    <span class="doccomment">///     fs::File</span>
+    <span class="doccomment">/// };</span>
     <span class="doccomment">/// use actix_files::NamedFile;</span>
-    <span class="doccomment">/// use std::io::{self, Write};</span>
-    <span class="doccomment">/// use std::env;</span>
-    <span class="doccomment">/// use std::fs::File;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// fn main() -&gt; io::Result&lt;()&gt; {</span>
-    <span class="doccomment">///     let mut file = File::create(&quot;foo.txt&quot;)?;</span>
-    <span class="doccomment">///     file.write_all(b&quot;Hello, world!&quot;)?;</span>
-    <span class="doccomment">///     let named_file = NamedFile::from_file(file, &quot;bar.txt&quot;)?;</span>
-    <span class="doccomment">///     # std::fs::remove_file(&quot;foo.txt&quot;);</span>
-    <span class="doccomment">///     Ok(())</span>
-    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// let mut file = File::create(&quot;foo.txt&quot;)?;</span>
+    <span class="doccomment">/// file.write_all(b&quot;Hello, world!&quot;)?;</span>
+    <span class="doccomment">/// let named_file = NamedFile::from_file(file, &quot;bar.txt&quot;)?;</span>
+    <span class="doccomment">/// # std::fs::remove_file(&quot;foo.txt&quot;);</span>
+    <span class="doccomment">/// Ok(())</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">File</span>, <span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">NamedFile</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">as_ref</span>().<span class="ident">to_path_buf</span>();

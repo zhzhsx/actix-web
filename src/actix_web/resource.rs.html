@@ -804,9 +804,6 @@
 <span id="797">797</span>
 <span id="798">798</span>
 <span id="799">799</span>
-<span id="800">800</span>
-<span id="801">801</span>
-<span id="802">802</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::RefCell</span>, <span class="ident">fmt</span>, <span class="ident">future::Future</span>, <span class="ident">rc::Rc</span>};
 
 <span class="kw">use</span> <span class="ident">actix_http::Extensions</span>;
@@ -902,19 +899,17 @@
     <span class="doccomment">///     &quot;Welcome!&quot;</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// fn main() {</span>
-    <span class="doccomment">///     let app = App::new()</span>
-    <span class="doccomment">///         .service(</span>
-    <span class="doccomment">///             web::resource(&quot;/app&quot;)</span>
-    <span class="doccomment">///                 .guard(guard::Header(&quot;content-type&quot;, &quot;text/plain&quot;))</span>
-    <span class="doccomment">///                 .route(web::get().to(index))</span>
-    <span class="doccomment">///         )</span>
-    <span class="doccomment">///         .service(</span>
-    <span class="doccomment">///             web::resource(&quot;/app&quot;)</span>
-    <span class="doccomment">///                 .guard(guard::Header(&quot;content-type&quot;, &quot;text/json&quot;))</span>
-    <span class="doccomment">///                 .route(web::get().to(|| HttpResponse::MethodNotAllowed()))</span>
-    <span class="doccomment">///         );</span>
-    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// let app = App::new()</span>
+    <span class="doccomment">///     .service(</span>
+    <span class="doccomment">///         web::resource(&quot;/app&quot;)</span>
+    <span class="doccomment">///             .guard(guard::Header(&quot;content-type&quot;, &quot;text/plain&quot;))</span>
+    <span class="doccomment">///             .route(web::get().to(index))</span>
+    <span class="doccomment">///     )</span>
+    <span class="doccomment">///     .service(</span>
+    <span class="doccomment">///         web::resource(&quot;/app&quot;)</span>
+    <span class="doccomment">///             .guard(guard::Header(&quot;content-type&quot;, &quot;text/json&quot;))</span>
+    <span class="doccomment">///             .route(web::get().to(|| HttpResponse::MethodNotAllowed()))</span>
+    <span class="doccomment">///     );</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guard</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">guard</span>: <span class="ident">G</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">guards</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">guard</span>));
@@ -946,14 +941,13 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::{web, guard, App};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// fn main() {</span>
-    <span class="doccomment">///     let app = App::new().service(</span>
-    <span class="doccomment">///         web::resource(&quot;/container/&quot;)</span>
-    <span class="doccomment">///              .route(web::get().to(get_handler))</span>
-    <span class="doccomment">///              .route(web::post().to(post_handler))</span>
-    <span class="doccomment">///              .route(web::delete().to(delete_handler))</span>
-    <span class="doccomment">///     );</span>
-    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// let app = App::new().service(</span>
+    <span class="doccomment">///     web::resource(&quot;/container/&quot;)</span>
+    <span class="doccomment">///          .route(web::get().to(get_handler))</span>
+    <span class="doccomment">///          .route(web::post().to(post_handler))</span>
+    <span class="doccomment">///          .route(web::delete().to(delete_handler))</span>
+    <span class="doccomment">/// );</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// # async fn get_handler() -&gt; impl actix_web::Responder { actix_web::HttpResponse::Ok() }</span>
     <span class="doccomment">/// # async fn post_handler() -&gt; impl actix_web::Responder { actix_web::HttpResponse::Ok() }</span>
     <span class="doccomment">/// # async fn delete_handler() -&gt; impl actix_web::Responder { actix_web::HttpResponse::Ok() }</span>

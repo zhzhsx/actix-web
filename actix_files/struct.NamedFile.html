@@ -25,17 +25,17 @@
 <p>The given <code>path</code> need not exist and is only used to determine the <code>ContentType</code> and
 <code>ContentDisposition</code> headers.</p>
 <h5 id="examples"><a href="#examples">Examples</a></h5>
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">actix_files::NamedFile</span>;
-<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std::env</span>;
-<span class="kw">use</span> <span class="ident">std::fs::File</span>;
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">std</span>::{
+    <span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Write</span> <span class="kw">as</span> <span class="kw">_</span>},
+    <span class="ident">env</span>,
+    <span class="ident">fs::File</span>
+};
+<span class="kw">use</span> <span class="ident">actix_files::NamedFile</span>;
 
-<span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="string">&quot;foo.txt&quot;</span>)<span class="question-mark">?</span>;
-    <span class="ident">file</span>.<span class="ident">write_all</span>(<span class="string">b&quot;Hello, world!&quot;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">named_file</span> <span class="op">=</span> <span class="ident">NamedFile::from_file</span>(<span class="ident">file</span>, <span class="string">&quot;bar.txt&quot;</span>)<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(())
-}</code></pre></div>
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="string">&quot;foo.txt&quot;</span>)<span class="question-mark">?</span>;
+<span class="ident">file</span>.<span class="ident">write_all</span>(<span class="string">b&quot;Hello, world!&quot;</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">named_file</span> <span class="op">=</span> <span class="ident">NamedFile::from_file</span>(<span class="ident">file</span>, <span class="string">&quot;bar.txt&quot;</span>)<span class="question-mark">?</span>;
+<span class="prelude-val">Ok</span>(())</code></pre></div>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><section id="method.open_async" class="method has-srclink"><span class="rightside"><a class="srclink" href="../src/actix_files/named.rs.html#225-239">source</a></span><a href="#method.open_async" class="anchor"></a><h4 class="code-header">pub async fn <a href="#method.open_async" class="fnname">open_async</a>&lt;P:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;&gt;(path: P) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html" title="type std::io::error::Result">Result</a>&lt;<a class="struct" href="struct.NamedFile.html" title="struct actix_files::NamedFile">NamedFile</a>&gt;</h4></section></summary><div class="docblock"><p>Attempts to open a file asynchronously in read-only mode.</p>
 <p>When the <code>experimental-io-uring</code> crate feature is enabled, this will be async.
 Otherwise, it will be just like [<code>open</code>][Self::open].</p>

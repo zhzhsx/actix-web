@@ -716,8 +716,6 @@
 <span id="709">709</span>
 <span id="710">710</span>
 <span id="711">711</span>
-<span id="712">712</span>
-<span id="713">713</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::RefCell</span>, <span class="ident">fmt</span>, <span class="ident">future::Future</span>, <span class="ident">rc::Rc</span>};
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">body::MessageBody</span>, <span class="ident">Extensions</span>, <span class="ident">Request</span>};
@@ -1010,12 +1008,10 @@
     <span class="doccomment">///     Ok(HttpResponse::Ok().into())</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// fn main() {</span>
-    <span class="doccomment">///     let app = App::new()</span>
-    <span class="doccomment">///         .service(web::resource(&quot;/index.html&quot;).route(</span>
-    <span class="doccomment">///             web::get().to(index)))</span>
-    <span class="doccomment">///         .external_resource(&quot;youtube&quot;, &quot;https://youtube.com/watch/{video_id}&quot;);</span>
-    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// let app = App::new()</span>
+    <span class="doccomment">///     .service(web::resource(&quot;/index.html&quot;).route(</span>
+    <span class="doccomment">///         web::get().to(index)))</span>
+    <span class="doccomment">///     .external_resource(&quot;youtube&quot;, &quot;https://youtube.com/watch/{video_id}&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">external_resource</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">url</span>: <span class="ident">U</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
