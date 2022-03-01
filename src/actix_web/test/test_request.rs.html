@@ -439,6 +439,8 @@
 <span id="432">432</span>
 <span id="433">433</span>
 <span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">borrow::Cow</span>, <span class="ident">net::SocketAddr</span>, <span class="ident">rc::Rc</span>};
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">test::TestRequest</span> <span class="kw">as</span> <span class="ident">HttpTestRequest</span>, <span class="ident">Request</span>};
@@ -465,10 +467,10 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// For unit testing, actix provides a request builder type and a simple handler runner. TestRequest implements a builder-like pattern.</span>
 <span class="doccomment">/// You can generate various types of request via TestRequest&#39;s methods:</span>
-<span class="doccomment">///  * `TestRequest::to_request` creates `actix_http::Request` instance.</span>
-<span class="doccomment">///  * `TestRequest::to_srv_request` creates `ServiceRequest` instance, which is used for testing middlewares and chain adapters.</span>
-<span class="doccomment">///  * `TestRequest::to_srv_response` creates `ServiceResponse` instance.</span>
-<span class="doccomment">///  * `TestRequest::to_http_request` creates `HttpRequest` instance, which is used for testing handlers.</span>
+<span class="doccomment">/// - [`TestRequest::to_request`] creates an [`actix_http::Request`](Request).</span>
+<span class="doccomment">/// - [`TestRequest::to_srv_request`] creates a [`ServiceRequest`], which is used for testing middlewares and chain adapters.</span>
+<span class="doccomment">/// - [`TestRequest::to_srv_response`] creates a [`ServiceResponse`].</span>
+<span class="doccomment">/// - [`TestRequest::to_http_request`] creates an [`HttpRequest`], which is used for testing handlers.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use actix_web::{test, HttpRequest, HttpResponse, HttpMessage};</span>
@@ -483,15 +485,17 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[actix_web::test]</span>
+<span class="doccomment">/// # // force rustdoc to display the correct thing and also compile check the test</span>
+<span class="doccomment">/// # async fn _test() {}</span>
 <span class="doccomment">/// async fn test_index() {</span>
-<span class="doccomment">///     let req = test::TestRequest::default().insert_header(&quot;content-type&quot;, &quot;text/plain&quot;)</span>
+<span class="doccomment">///     let req = test::TestRequest::default().insert_header(header::ContentType::plaintext())</span>
 <span class="doccomment">///         .to_http_request();</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     let resp = index(req).await.unwrap();</span>
+<span class="doccomment">///     let resp = index(req).await;</span>
 <span class="doccomment">///     assert_eq!(resp.status(), StatusCode::OK);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     let req = test::TestRequest::default().to_http_request();</span>
-<span class="doccomment">///     let resp = index(req).await.unwrap();</span>
+<span class="doccomment">///     let resp = index(req).await;</span>
 <span class="doccomment">///     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
@@ -874,5 +878,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (d3ad51b48 2022-02-25)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (6a7055661 2022-02-27)" ></div>
 </body></html>
