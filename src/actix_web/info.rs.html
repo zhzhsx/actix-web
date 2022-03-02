@@ -637,7 +637,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">realip_remote_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">realip_remote_addr</span>
             .<span class="ident">as_deref</span>()
-            .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">peer_addr</span>.<span class="ident">as_deref</span>())
+            .<span class="ident">or</span>(<span class="self">self</span>.<span class="ident">peer_addr</span>.<span class="ident">as_deref</span>())
     }
 
     <span class="doccomment">/// Returns serialized IP address of the peer connection.</span>
