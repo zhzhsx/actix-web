@@ -1327,6 +1327,10 @@
 <span id="1320">1320</span>
 <span id="1321">1321</span>
 <span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
+<span id="1325">1325</span>
+<span id="1326">1326</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections::VecDeque</span>,
     <span class="ident">fmt</span>,
@@ -1704,8 +1708,6 @@
                 <span class="ident">DispatchError::Io</span>(<span class="ident">err</span>)
             })<span class="question-mark">?</span>;
 
-        <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">Flags::KEEP_ALIVE</span>, <span class="ident">this</span>.<span class="ident">codec</span>.<span class="ident">keep_alive</span>());
-
         <span class="prelude-val">Ok</span>(<span class="ident">size</span>)
     }
 
@@ -1788,7 +1790,12 @@
                     }
 
                     <span class="comment">// all messages are dealt with</span>
-                    <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">PollResponse::DoNothing</span>),
+                    <span class="prelude-val">None</span> =&gt; {
+                        <span class="comment">// start keep-alive if last request allowed it</span>
+                        <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">set</span>(<span class="ident">Flags::KEEP_ALIVE</span>, <span class="ident">this</span>.<span class="ident">codec</span>.<span class="ident">keep_alive</span>());
+
+                        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">PollResponse::DoNothing</span>);
+                    }
                 },
 
                 <span class="ident">StateProj::ServiceCall</span> { <span class="ident">fut</span> } =&gt; {
@@ -2086,6 +2093,7 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">updated</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
+        <span class="comment">// decode from read buf as many full requests as possible</span>
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="ident">this</span>.<span class="ident">codec</span>.<span class="ident">decode</span>(<span class="ident">this</span>.<span class="ident">read_buf</span>) {
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)) =&gt; {
@@ -2650,5 +2658,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (f0c4da499 2022-03-01)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (10913c000 2022-03-03)" ></div>
 </body></html>
