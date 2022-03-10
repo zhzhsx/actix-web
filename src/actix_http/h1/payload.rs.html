@@ -289,6 +289,9 @@
 <span id="282">282</span>
 <span id="283">283</span>
 <span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Payload stream</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -554,7 +557,10 @@
     <span class="macro">assert_not_impl_any!</span>(<span class="ident">Payload</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>, <span class="ident">UnwindSafe</span>, <span class="ident">RefUnwindSafe</span>);
 
     <span class="macro">assert_impl_all!</span>(<span class="ident">Inner</span>: <span class="ident">Unpin</span>, <span class="ident">Send</span>, <span class="ident">Sync</span>);
+    <span class="attribute">#[<span class="ident">rustversion::before</span>(<span class="number">1.60</span>)]</span>
     <span class="macro">assert_not_impl_any!</span>(<span class="ident">Inner</span>: <span class="ident">UnwindSafe</span>, <span class="ident">RefUnwindSafe</span>);
+    <span class="attribute">#[<span class="ident">rustversion::since</span>(<span class="number">1.60</span>)]</span>
+    <span class="macro">assert_impl_all!</span>(<span class="ident">Inner</span>: <span class="ident">UnwindSafe</span>, <span class="ident">RefUnwindSafe</span>);
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_unread_data</span>() {
