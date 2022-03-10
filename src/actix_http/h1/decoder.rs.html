@@ -1064,7 +1064,7 @@
     <span class="ident">header</span>::{<span class="self">self</span>, <span class="ident">HeaderName</span>, <span class="ident">HeaderValue</span>},
     <span class="ident">Method</span>, <span class="ident">StatusCode</span>, <span class="ident">Uri</span>, <span class="ident">Version</span>,
 };
-<span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">error</span>, <span class="ident">trace</span>};
+<span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">debug</span>, <span class="ident">error</span>, <span class="ident">trace</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::chunked::ChunkedState</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">error::ParseError</span>, <span class="ident">header::HeaderMap</span>, <span class="ident">ConnectionType</span>, <span class="ident">Request</span>, <span class="ident">ResponseHead</span>};

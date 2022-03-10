@@ -387,7 +387,7 @@
 };
 <span class="kw">use</span> <span class="ident">actix_utils::future::ready</span>;
 <span class="kw">use</span> <span class="ident">futures_core</span>::{<span class="ident">future::LocalBoxFuture</span>, <span class="ident">ready</span>};
-<span class="kw">use</span> <span class="ident">log::error</span>;
+<span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">error</span>, <span class="ident">trace</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">body</span>::{<span class="ident">BoxBody</span>, <span class="ident">MessageBody</span>},
@@ -728,7 +728,7 @@
                 }
 
                 <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-                    <span class="macro">log::trace!</span>(<span class="string">&quot;H2 handshake error: {}&quot;</span>, <span class="ident">err</span>);
+                    <span class="macro">trace!</span>(<span class="string">&quot;H2 handshake error: {}&quot;</span>, <span class="ident">err</span>);
                     <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>))
                 }
             },

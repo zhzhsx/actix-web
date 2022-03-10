@@ -371,8 +371,8 @@
     <span class="ident">server</span>::{<span class="ident">Connection</span>, <span class="ident">SendResponse</span>},
     <span class="ident">Ping</span>, <span class="ident">PingPong</span>,
 };
-<span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">error</span>, <span class="ident">trace</span>};
 <span class="kw">use</span> <span class="ident">pin_project_lite::pin_project</span>;
+<span class="kw">use</span> <span class="ident">tracing</span>::{<span class="ident">error</span>, <span class="ident">trace</span>, <span class="ident">warn</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">body</span>::{<span class="ident">BodySize</span>, <span class="ident">BoxBody</span>, <span class="ident">MessageBody</span>},
@@ -495,7 +495,7 @@
                                 <span class="ident">DispatchError::SendResponse</span>(<span class="ident">err</span>) =&gt; {
                                     <span class="macro">trace!</span>(<span class="string">&quot;Error sending HTTP/2 response: {:?}&quot;</span>, <span class="ident">err</span>)
                                 }
-                                <span class="ident">DispatchError::SendData</span>(<span class="ident">err</span>) =&gt; <span class="macro">log::warn!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>),
+                                <span class="ident">DispatchError::SendData</span>(<span class="ident">err</span>) =&gt; <span class="macro">warn!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>),
                                 <span class="ident">DispatchError::ResponseBody</span>(<span class="ident">err</span>) =&gt; {
                                     <span class="macro">error!</span>(<span class="string">&quot;Response payload stream error: {:?}&quot;</span>, <span class="ident">err</span>)
                                 }

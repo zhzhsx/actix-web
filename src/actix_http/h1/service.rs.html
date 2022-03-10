@@ -374,6 +374,7 @@
 <span id="367">367</span>
 <span id="368">368</span>
 <span id="369">369</span>
+<span id="370">370</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
     <span class="ident">marker::PhantomData</span>,
@@ -389,6 +390,7 @@
 };
 <span class="kw">use</span> <span class="ident">actix_utils::future::ready</span>;
 <span class="kw">use</span> <span class="ident">futures_core::future::LocalBoxFuture</span>;
+<span class="kw">use</span> <span class="ident">tracing::error</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">body</span>::{<span class="ident">BoxBody</span>, <span class="ident">MessageBody</span>},
@@ -681,13 +683,13 @@
         <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">expect</span> <span class="op">=</span> <span class="ident">expect</span>
                 .<span class="kw">await</span>
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">log::error!</span>(<span class="string">&quot;Init http expect service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">error!</span>(<span class="string">&quot;Init http expect service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
 
             <span class="kw">let</span> <span class="ident">upgrade</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">upgrade</span> {
                 <span class="prelude-val">Some</span>(<span class="ident">upgrade</span>) =&gt; {
                     <span class="kw">let</span> <span class="ident">upgrade</span> <span class="op">=</span> <span class="ident">upgrade</span>
                         .<span class="kw">await</span>
-                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">log::error!</span>(<span class="string">&quot;Init http upgrade service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">error!</span>(<span class="string">&quot;Init http upgrade service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                     <span class="prelude-val">Some</span>(<span class="ident">upgrade</span>)
                 }
                 <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
@@ -695,7 +697,7 @@
 
             <span class="kw">let</span> <span class="ident">service</span> <span class="op">=</span> <span class="ident">service</span>
                 .<span class="kw">await</span>
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">log::error!</span>(<span class="string">&quot;Init http service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">error!</span>(<span class="string">&quot;Init http service error: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
 
             <span class="prelude-val">Ok</span>(<span class="ident">H1ServiceHandler::new</span>(
                 <span class="ident">cfg</span>,
@@ -733,7 +735,7 @@
 
     <span class="kw">fn</span> <span class="ident">poll_ready</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">_poll_ready</span>(<span class="ident">cx</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-            <span class="macro">log::error!</span>(<span class="string">&quot;HTTP/1 service readiness error: {:?}&quot;</span>, <span class="ident">err</span>);
+            <span class="macro">error!</span>(<span class="string">&quot;HTTP/1 service readiness error: {:?}&quot;</span>, <span class="ident">err</span>);
             <span class="ident">DispatchError::Service</span>(<span class="ident">err</span>)
         })
     }

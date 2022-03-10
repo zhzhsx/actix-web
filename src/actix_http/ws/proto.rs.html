@@ -359,10 +359,14 @@
 <span id="352">352</span>
 <span id="353">353</span>
 <span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert</span>::{<span class="ident">From</span>, <span class="ident">Into</span>},
     <span class="ident">fmt</span>,
 };
+
+<span class="kw">use</span> <span class="ident">tracing::error</span>;
 
 <span class="doccomment">/// Operation codes defined in [RFC 6455 §11.8].</span>
 <span class="doccomment">///</span>
@@ -419,7 +423,7 @@
             <span class="ident">Ping</span> =&gt; <span class="number">9</span>,
             <span class="ident">Pong</span> =&gt; <span class="number">10</span>,
             <span class="ident">Bad</span> =&gt; {
-                <span class="macro">log::error!</span>(<span class="string">&quot;Attempted to convert invalid opcode to u8. This is a bug.&quot;</span>);
+                <span class="macro">error!</span>(<span class="string">&quot;Attempted to convert invalid opcode to u8. This is a bug.&quot;</span>);
                 <span class="number">8</span> <span class="comment">// if this somehow happens, a close frame will help us tear down quickly</span>
             }
         }

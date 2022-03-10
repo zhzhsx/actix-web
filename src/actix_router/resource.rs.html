@@ -1810,8 +1810,6 @@
 <span id="1803">1803</span>
 <span id="1804">1804</span>
 <span id="1805">1805</span>
-<span id="1806">1806</span>
-<span id="1807">1807</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">borrow</span>::{<span class="ident">Borrow</span>, <span class="ident">Cow</span>},
     <span class="ident">collections::HashMap</span>,
@@ -1821,6 +1819,7 @@
 
 <span class="kw">use</span> <span class="ident">firestorm</span>::{<span class="ident">profile_fn</span>, <span class="ident">profile_method</span>, <span class="ident">profile_section</span>};
 <span class="kw">use</span> <span class="ident">regex</span>::{<span class="ident">escape</span>, <span class="ident">Regex</span>, <span class="ident">RegexSet</span>};
+<span class="kw">use</span> <span class="ident">tracing::error</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">path::PathItem</span>, <span class="ident">IntoPatterns</span>, <span class="ident">Patterns</span>, <span class="ident">Resource</span>, <span class="ident">ResourcePath</span>};
 
@@ -2528,10 +2527,7 @@
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">captures</span>.<span class="ident">name</span>(<span class="ident">name</span>) {
                             <span class="ident">segments</span>[<span class="ident">no</span>] <span class="op">=</span> <span class="ident">PathItem::Segment</span>(<span class="ident">m</span>.<span class="ident">start</span>() <span class="kw">as</span> <span class="ident">u16</span>, <span class="ident">m</span>.<span class="ident">end</span>() <span class="kw">as</span> <span class="ident">u16</span>);
                         } <span class="kw">else</span> {
-                            <span class="macro">log::error!</span>(
-                                <span class="string">&quot;Dynamic path match but not all segments found: {}&quot;</span>,
-                                <span class="ident">name</span>
-                            );
+                            <span class="macro">error!</span>(<span class="string">&quot;Dynamic path match but not all segments found: {}&quot;</span>, <span class="ident">name</span>);
                             <span class="kw">return</span> <span class="bool-val">false</span>;
                         }
                     }
@@ -2558,7 +2554,7 @@
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">captures</span>.<span class="ident">name</span>(<span class="ident">name</span>) {
                         <span class="ident">segments</span>[<span class="ident">no</span>] <span class="op">=</span> <span class="ident">PathItem::Segment</span>(<span class="ident">m</span>.<span class="ident">start</span>() <span class="kw">as</span> <span class="ident">u16</span>, <span class="ident">m</span>.<span class="ident">end</span>() <span class="kw">as</span> <span class="ident">u16</span>);
                     } <span class="kw">else</span> {
-                        <span class="macro">log::error!</span>(<span class="string">&quot;Dynamic path match but not all segments found: {}&quot;</span>, <span class="ident">name</span>);
+                        <span class="macro">error!</span>(<span class="string">&quot;Dynamic path match but not all segments found: {}&quot;</span>, <span class="ident">name</span>);
                         <span class="kw">return</span> <span class="bool-val">false</span>;
                     }
                 }
@@ -2852,7 +2848,7 @@
             <span class="comment">// tail segments in prefixes have no defined semantics</span>
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-            <span class="macro">log::warn!</span>(
+            <span class="macro">tracing::warn!</span>(
                 <span class="string">&quot;Prefix resources should not have tail segments. \
                 Use `ResourceDef::new` constructor. \
                 This may become a panic in the future.&quot;</span>
@@ -2867,7 +2863,7 @@
             <span class="comment">// unnamed tail segment</span>
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-            <span class="macro">log::warn!</span>(
+            <span class="macro">tracing::warn!</span>(
                 <span class="string">&quot;Tail segments must have names. \
                 Consider `.../{{tail}}*`. \
                 This may become a panic in the future.&quot;</span>
