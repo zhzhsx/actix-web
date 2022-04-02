@@ -846,6 +846,31 @@
 <span id="839">839</span>
 <span id="840">840</span>
 <span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefMut</span>},
     <span class="ident">fmt</span>, <span class="ident">net</span>,
@@ -872,7 +897,7 @@
     <span class="ident">guard</span>::{<span class="ident">Guard</span>, <span class="ident">GuardContext</span>},
     <span class="ident">info::ConnectionInfo</span>,
     <span class="ident">rmap::ResourceMap</span>,
-    <span class="ident">Error</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>,
+    <span class="ident">Error</span>, <span class="ident">FromRequest</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>,
 };
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">BoxedHttpService</span> <span class="op">=</span> <span class="ident">BoxService</span><span class="op">&lt;</span><span class="ident">ServiceRequest</span>, <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">BoxBody</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
@@ -941,6 +966,31 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parts_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> <span class="ident">HttpRequest</span>, <span class="kw-2">&amp;mut</span> <span class="ident">Payload</span>) {
         (<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">req</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">payload</span>)
+    }
+
+    <span class="doccomment">/// Derives a type from this request using an [extractor](crate::FromRequest).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns the `T` extractor&#39;s `Future` type which can be `await`ed. This is particularly handy</span>
+    <span class="doccomment">/// when you want to use an extractor in a middleware implementation.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use actix_web::{</span>
+    <span class="doccomment">///     dev::{ServiceRequest, ServiceResponse},</span>
+    <span class="doccomment">///     web::Path, Error</span>
+    <span class="doccomment">/// };</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// async fn my_helper(mut srv_req: ServiceRequest) -&gt; Result&lt;ServiceResponse, Error&gt; {</span>
+    <span class="doccomment">///     let path = srv_req.extract::&lt;Path&lt;(String, u32)&gt;&gt;().await?;</span>
+    <span class="doccomment">///     // [...]</span>
+    <span class="doccomment">/// #   todo!()</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">FromRequest</span><span class="op">&gt;</span><span class="ident">::Future</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">FromRequest</span>,
+    {
+        <span class="ident">T::from_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">payload</span>)
     }
 
     <span class="doccomment">/// Construct request from parts.</span>
@@ -1688,5 +1738,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (8d60bf427 2022-03-19)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (eb82facb1 2022-04-01)" ></div>
 </body></html>

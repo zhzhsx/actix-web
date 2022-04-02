@@ -535,6 +535,8 @@
 <span id="528">528</span>
 <span id="529">529</span>
 <span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Request extractors</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -555,9 +557,11 @@
 <span class="doccomment">/// A type that implements [`FromRequest`] is called an **extractor** and can extract data from</span>
 <span class="doccomment">/// the request. Some types that implement this trait are: [`Json`], [`Header`], and [`Path`].</span>
 <span class="doccomment">///</span>
+<span class="doccomment">/// Check out [`ServiceRequest::extract`](crate::dev::ServiceRequest::extract) if you want to</span>
+<span class="doccomment">/// leverage extractors when implementing middlewares.</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// # Configuration</span>
 <span class="doccomment">/// An extractor can be customized by injecting the corresponding configuration with one of:</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// - [`App::app_data()`][crate::App::app_data]</span>
 <span class="doccomment">/// - [`Scope::app_data()`][crate::Scope::app_data]</span>
 <span class="doccomment">/// - [`Resource::app_data()`][crate::Resource::app_data]</span>
@@ -1066,5 +1070,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (8d60bf427 2022-03-19)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (eb82facb1 2022-04-01)" ></div>
 </body></html>

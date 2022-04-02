@@ -441,6 +441,7 @@
 <span id="434">434</span>
 <span id="435">435</span>
 <span id="436">436</span>
+<span id="437">437</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">borrow::Cow</span>, <span class="ident">net::SocketAddr</span>, <span class="ident">rc::Rc</span>};
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">test::TestRequest</span> <span class="kw">as</span> <span class="ident">HttpTestRequest</span>, <span class="ident">Request</span>};
@@ -476,7 +477,7 @@
 <span class="doccomment">/// use actix_web::{test, HttpRequest, HttpResponse, HttpMessage};</span>
 <span class="doccomment">/// use actix_web::http::{header, StatusCode};</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// async fn index(req: HttpRequest) -&gt; HttpResponse {</span>
+<span class="doccomment">/// async fn handler(req: HttpRequest) -&gt; HttpResponse {</span>
 <span class="doccomment">///     if let Some(hdr) = req.headers().get(header::CONTENT_TYPE) {</span>
 <span class="doccomment">///         HttpResponse::Ok().into()</span>
 <span class="doccomment">///     } else {</span>
@@ -488,10 +489,11 @@
 <span class="doccomment">/// # // force rustdoc to display the correct thing and also compile check the test</span>
 <span class="doccomment">/// # async fn _test() {}</span>
 <span class="doccomment">/// async fn test_index() {</span>
-<span class="doccomment">///     let req = test::TestRequest::default().insert_header(header::ContentType::plaintext())</span>
+<span class="doccomment">///     let req = test::TestRequest::default()</span>
+<span class="doccomment">///         .insert_header(header::ContentType::plaintext())</span>
 <span class="doccomment">///         .to_http_request();</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     let resp = index(req).await;</span>
+<span class="doccomment">///     let resp = handler(req).await;</span>
 <span class="doccomment">///     assert_eq!(resp.status(), StatusCode::OK);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     let req = test::TestRequest::default().to_http_request();</span>
@@ -878,5 +880,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (8d60bf427 2022-03-19)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (eb82facb1 2022-04-01)" ></div>
 </body></html>
