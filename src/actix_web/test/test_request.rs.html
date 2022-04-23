@@ -497,7 +497,7 @@
 <span class="doccomment">///     assert_eq!(resp.status(), StatusCode::OK);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     let req = test::TestRequest::default().to_http_request();</span>
-<span class="doccomment">///     let resp = index(req).await;</span>
+<span class="doccomment">///     let resp = handler(req).await;</span>
 <span class="doccomment">///     assert_eq!(resp.status(), StatusCode::BAD_REQUEST);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
