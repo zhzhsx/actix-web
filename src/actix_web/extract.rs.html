@@ -537,6 +537,7 @@
 <span id="530">530</span>
 <span id="531">531</span>
 <span id="532">532</span>
+<span id="533">533</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Request extractors</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -619,9 +620,9 @@
     }
 }
 
-<span class="doccomment">/// Optionally extract a field from the request</span>
+<span class="doccomment">/// Optionally extract from the request.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If the FromRequest for T fails, return None rather than returning an error response</span>
+<span class="doccomment">/// If the inner `T::from_request` returns an error, handler will receive `None` instead.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">/// ```</span>
@@ -706,9 +707,10 @@
     }
 }
 
-<span class="doccomment">/// Optionally extract a field from the request or extract the Error if unsuccessful</span>
+<span class="doccomment">/// Extract from the request, passing error type through to handler.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If the `FromRequest` for T fails, inject Err into handler rather than returning an error response</span>
+<span class="doccomment">/// If the inner `T::from_request` returns an error, allow handler to receive the error rather than</span>
+<span class="doccomment">/// immediately returning an error response.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">/// ```</span>
