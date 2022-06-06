@@ -381,7 +381,7 @@
 <span class="kw">use</span> <span class="ident">proc_macro::TokenStream</span>;
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Span</span>, <span class="ident">TokenStream</span> <span class="kw">as</span> <span class="ident">TokenStream2</span>};
 <span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">format_ident</span>, <span class="ident">quote</span>, <span class="ident">ToTokens</span>, <span class="ident">TokenStreamExt</span>};
-<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">parse_macro_input</span>, <span class="ident">AttributeArgs</span>, <span class="ident">Ident</span>, <span class="ident">LitStr</span>, <span class="ident">NestedMeta</span>};
+<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">parse_macro_input</span>, <span class="ident">AttributeArgs</span>, <span class="ident">Ident</span>, <span class="ident">LitStr</span>, <span class="ident">NestedMeta</span>, <span class="ident">Path</span>};
 
 <span class="kw">enum</span> <span class="ident">ResourceType</span> {
     <span class="ident">Async</span>,
@@ -454,7 +454,7 @@
 <span class="kw">struct</span> <span class="ident">Args</span> {
     <span class="ident">path</span>: <span class="ident">syn::LitStr</span>,
     <span class="ident">resource_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">syn::LitStr</span><span class="op">&gt;</span>,
-    <span class="ident">guards</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Ident</span><span class="op">&gt;</span>,
+    <span class="ident">guards</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     <span class="ident">wrappers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn::Type</span><span class="op">&gt;</span>,
     <span class="ident">methods</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">MethodType</span><span class="op">&gt;</span>,
 }
@@ -498,7 +498,7 @@
                         }
                     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">nv</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="string">&quot;guard&quot;</span>) {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">syn::Lit::Str</span>(<span class="ident">lit</span>) <span class="op">=</span> <span class="ident">nv</span>.<span class="ident">lit</span> {
-                            <span class="ident">guards</span>.<span class="ident">push</span>(<span class="ident">Ident::new</span>(<span class="kw-2">&amp;</span><span class="ident">lit</span>.<span class="ident">value</span>(), <span class="ident">Span::call_site</span>()));
+                            <span class="ident">guards</span>.<span class="ident">push</span>(<span class="ident">lit</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>()<span class="question-mark">?</span>);
                         } <span class="kw">else</span> {
                             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">syn::Error::new_spanned</span>(
                                 <span class="ident">nv</span>.<span class="ident">lit</span>,
@@ -746,5 +746,5 @@
     <span class="ident">item</span>
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web_codegen" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (28b891916 2022-05-29)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web_codegen" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (fee3a459d 2022-06-05)" ></div>
 </body></html>
