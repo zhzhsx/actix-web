@@ -425,6 +425,16 @@
 <span id="417">417</span>
 <span id="418">418</span>
 <span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">net::SocketAddr</span>, <span class="ident">rc::Rc</span>};
 
 <span class="kw">use</span> <span class="ident">actix_service</span>::{<span class="ident">boxed</span>, <span class="ident">IntoServiceFactory</span>, <span class="ident">ServiceFactory</span>, <span class="ident">ServiceFactoryExt</span> <span class="kw">as</span> <span class="kw">_</span>};
@@ -580,6 +590,16 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AppConfig</span> {
+    <span class="doccomment">/// Returns the default AppConfig.</span>
+    <span class="doccomment">/// Note: The included socket address is &quot;127.0.0.1&quot;.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// 127.0.0.1: non-routable meta address that denotes an unknown, invalid or non-applicable target.</span>
+    <span class="doccomment">/// If you need a service only accessed by itself, use a loopback address.</span>
+    <span class="doccomment">/// A loopback address for IPv4 is any loopback address that begins with &quot;127&quot;.</span>
+    <span class="doccomment">/// Loopback addresses should be only used to test your application locally.</span>
+    <span class="doccomment">/// The default configuration provides a loopback address.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// 0.0.0.0: if configured to use this special address, the application will listen to any IP address configured on the machine.</span>
     <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">AppConfig::new</span>(
             <span class="bool-val">false</span>,
@@ -845,5 +865,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (43347397f 2022-06-23)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (fdca237d5 2022-06-24)" ></div>
 </body></html>
