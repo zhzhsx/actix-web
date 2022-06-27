@@ -108,6 +108,9 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
 </pre><pre class="rust"><code><span class="doccomment">//! HTTP primitives for the Actix ecosystem.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Crate Features</span>
@@ -135,6 +138,7 @@
 )]</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_logo_url</span> <span class="op">=</span> <span class="string">&quot;https://actix.rs/img/logo.png&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_favicon_url</span> <span class="op">=</span> <span class="string">&quot;https://actix.rs/favicon.ico&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">::http</span>::{<span class="ident">uri</span>, <span class="ident">uri::Uri</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">::http</span>::{<span class="ident">Method</span>, <span class="ident">StatusCode</span>, <span class="ident">Version</span>};
@@ -179,6 +183,8 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::requests</span>::{<span class="ident">Request</span>, <span class="ident">RequestHead</span>, <span class="ident">RequestHeadType</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::responses</span>::{<span class="ident">Response</span>, <span class="ident">ResponseBuilder</span>, <span class="ident">ResponseHead</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::service::HttpService</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>))]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::service::TlsAcceptorConfig</span>;
 
 <span class="doccomment">/// A major HTTP protocol version.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
