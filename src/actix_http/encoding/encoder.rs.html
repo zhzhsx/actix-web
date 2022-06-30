@@ -695,7 +695,7 @@
     <span class="ident">head</span>.<span class="ident">headers_mut</span>()
         .<span class="ident">insert</span>(<span class="ident">header::CONTENT_ENCODING</span>, <span class="ident">encoding</span>.<span class="ident">to_header_value</span>());
     <span class="ident">head</span>.<span class="ident">headers_mut</span>()
-        .<span class="ident">insert</span>(<span class="ident">header::VARY</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;accept-encoding&quot;</span>));
+        .<span class="ident">append</span>(<span class="ident">header::VARY</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;accept-encoding&quot;</span>));
 
     <span class="ident">head</span>.<span class="ident">no_chunking</span>(<span class="bool-val">false</span>);
 }
@@ -867,5 +867,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (c80c4b8fd 2022-06-26)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (ddcbba036 2022-06-29)" ></div>
 </body></html>
