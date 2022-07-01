@@ -2425,7 +2425,7 @@
     <span class="doccomment">///     resource.capture_match_info_fn(</span>
     <span class="doccomment">///         path,</span>
     <span class="doccomment">///         // when env var is not set, reject when path contains &quot;admin&quot;</span>
-    <span class="doccomment">///         |res| !(!admin_allowed &amp;&amp; res.path().contains(&quot;admin&quot;)),</span>
+    <span class="doccomment">///         |path| !(!admin_allowed &amp;&amp; path.as_str().contains(&quot;admin&quot;)),</span>
     <span class="doccomment">///     )</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
