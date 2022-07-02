@@ -1194,49 +1194,6 @@
 <span id="1186">1186</span>
 <span id="1187">1187</span>
 <span id="1188">1188</span>
-<span id="1189">1189</span>
-<span id="1190">1190</span>
-<span id="1191">1191</span>
-<span id="1192">1192</span>
-<span id="1193">1193</span>
-<span id="1194">1194</span>
-<span id="1195">1195</span>
-<span id="1196">1196</span>
-<span id="1197">1197</span>
-<span id="1198">1198</span>
-<span id="1199">1199</span>
-<span id="1200">1200</span>
-<span id="1201">1201</span>
-<span id="1202">1202</span>
-<span id="1203">1203</span>
-<span id="1204">1204</span>
-<span id="1205">1205</span>
-<span id="1206">1206</span>
-<span id="1207">1207</span>
-<span id="1208">1208</span>
-<span id="1209">1209</span>
-<span id="1210">1210</span>
-<span id="1211">1211</span>
-<span id="1212">1212</span>
-<span id="1213">1213</span>
-<span id="1214">1214</span>
-<span id="1215">1215</span>
-<span id="1216">1216</span>
-<span id="1217">1217</span>
-<span id="1218">1218</span>
-<span id="1219">1219</span>
-<span id="1220">1220</span>
-<span id="1221">1221</span>
-<span id="1222">1222</span>
-<span id="1223">1223</span>
-<span id="1224">1224</span>
-<span id="1225">1225</span>
-<span id="1226">1226</span>
-<span id="1227">1227</span>
-<span id="1228">1228</span>
-<span id="1229">1229</span>
-<span id="1230">1230</span>
-<span id="1231">1231</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">io</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">mem::MaybeUninit</span>, <span class="ident">task::Poll</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec::Decoder</span>;
@@ -2083,121 +2040,98 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_default_1_0</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET /test HTTP/1.0\r\n\r\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET /test HTTP/1.0\r\n\r\n&quot;</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Close</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_default_1_1</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET /test HTTP/1.1\r\n\r\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET /test HTTP/1.1\r\n\r\n&quot;</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::KeepAlive</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_close</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              connection: close\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Close</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              connection: Close\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Close</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_close_1_0</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.0\r\n\
              connection: close\r\n\r\n&quot;</span>,
-        );
-
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Close</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_keep_alive_1_0</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.0\r\n\
              connection: keep-alive\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::KeepAlive</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.0\r\n\
              connection: Keep-Alive\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::KeepAlive</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_keep_alive_1_1</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              connection: keep-alive\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::KeepAlive</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_other_1_0</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.0\r\n\
              connection: other\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Close</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_other_1_1</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              connection: other\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        ));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::KeepAlive</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_upgrade</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              upgrade: websockets\r\n\
              connection: upgrade\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
 
         <span class="macro">assert!</span>(<span class="ident">req</span>.<span class="ident">upgrade</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Upgrade</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              upgrade: Websockets\r\n\
              connection: Upgrade\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
 
         <span class="macro">assert!</span>(<span class="ident">req</span>.<span class="ident">upgrade</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">head</span>().<span class="ident">connection_type</span>(), <span class="ident">ConnectionType::Upgrade</span>);
@@ -2205,59 +2139,54 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_conn_upgrade_connect_method</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;CONNECT /test HTTP/1.1\r\n\
              content-type: text/plain\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
 
         <span class="macro">assert!</span>(<span class="ident">req</span>.<span class="ident">upgrade</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_headers_content_length_err_1</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+    <span class="kw">fn</span> <span class="ident">test_headers_bad_content_length</span>() {
+        <span class="comment">// string CL</span>
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              content-length: line\r\n\r\n&quot;</span>,
-        );
+        ));
 
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_headers_content_length_err_2</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="comment">// negative CL</span>
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              content-length: -1\r\n\r\n&quot;</span>,
-        );
+        ));
 
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        <span class="comment">// octal CL</span>
+        <span class="comment">// expect_parse_err!(&amp;mut BytesMut::from(</span>
+        <span class="comment">//     &quot;GET /test HTTP/1.1\r\n\</span>
+        <span class="comment">//      content-length: 0123\r\n\r\n&quot;,</span>
+        <span class="comment">// ));</span>
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_invalid_header</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              test line\r\n\r\n&quot;</span>,
-        );
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_invalid_name</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              test[]: line\r\n\r\n&quot;</span>,
-        );
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_http_request_bad_status_line</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;getpath \r\n\r\n&quot;</span>);
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;getpath \r\n\r\n&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2297,11 +2226,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_http_request_parser_utf8</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              x-test: тест\r\n\r\n&quot;</span>,
-        );
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
 
         <span class="macro">assert_eq!</span>(
             <span class="ident">req</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="string">&quot;x-test&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">as_bytes</span>(),
@@ -2311,24 +2239,18 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_http_request_parser_two_slashes</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET //path HTTP/1.1\r\n\r\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="macro">parse_ready!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET //path HTTP/1.1\r\n\r\n&quot;</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">req</span>.<span class="ident">path</span>(), <span class="string">&quot;//path&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_http_request_parser_bad_method</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;!12%()+=~$ /get HTTP/1.1\r\n\r\n&quot;</span>);
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;!12%()+=~$ /get HTTP/1.1\r\n\r\n&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_http_request_parser_bad_version</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET //get HT/11\r\n\r\n&quot;</span>);
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;GET //get HT/11\r\n\r\n&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2345,47 +2267,41 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">hrs_multiple_content_length</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET / HTTP/1.1\r\n\
             Host: example.com\r\n\
             Content-Length: 4\r\n\
             Content-Length: 2\r\n\
             \r\n\
             abcd&quot;</span>,
-        );
+        ));
 
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
-
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET / HTTP/1.1\r\n\
             Host: example.com\r\n\
             Content-Length: 0\r\n\
             Content-Length: 2\r\n\
             \r\n\
             ab&quot;</span>,
-        );
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">hrs_content_length_plus</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;GET / HTTP/1.1\r\n\
             Host: example.com\r\n\
             Content-Length: +3\r\n\
             \r\n\
             000&quot;</span>,
-        );
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">hrs_te_http10</span>() {
         <span class="comment">// in HTTP/1.0 transfer encoding is ignored and must therefore contain a CL header</span>
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BytesMut::from</span>(
             <span class="string">&quot;POST / HTTP/1.0\r\n\
             Host: example.com\r\n\
             Transfer-Encoding: chunked\r\n\
@@ -2394,9 +2310,7 @@
             aaa\r\n\
             0\r\n\
             &quot;</span>,
-        );
-
-        <span class="macro">expect_parse_err!</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>);
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
