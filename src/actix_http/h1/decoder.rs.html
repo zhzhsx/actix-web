@@ -1194,6 +1194,14 @@
 <span id="1186">1186</span>
 <span id="1187">1187</span>
 <span id="1188">1188</span>
+<span id="1189">1189</span>
+<span id="1190">1190</span>
+<span id="1191">1191</span>
+<span id="1192">1192</span>
+<span id="1193">1193</span>
+<span id="1194">1194</span>
+<span id="1195">1195</span>
+<span id="1196">1196</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">io</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">mem::MaybeUninit</span>, <span class="ident">task::Poll</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec::Decoder</span>;
@@ -2160,12 +2168,20 @@
             <span class="string">&quot;GET /test HTTP/1.1\r\n\
              content-length: -1\r\n\r\n&quot;</span>,
         ));
+    }
 
-        <span class="comment">// octal CL</span>
-        <span class="comment">// expect_parse_err!(&amp;mut BytesMut::from(</span>
-        <span class="comment">//     &quot;GET /test HTTP/1.1\r\n\</span>
-        <span class="comment">//      content-length: 0123\r\n\r\n&quot;,</span>
-        <span class="comment">// ));</span>
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">octal_ish_cl_parsed_as_decimal</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
+            <span class="string">&quot;POST /test HTTP/1.1\r\n\
+             content-length: 011\r\n\r\n&quot;</span>,
+        );
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">MessageDecoder</span>::<span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::default</span>();
+        <span class="kw">let</span> (<span class="ident">_req</span>, <span class="ident">pl</span>) <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">decode</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buf</span>).<span class="ident">unwrap</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+            <span class="ident">pl</span>,
+            <span class="ident">PayloadType::Payload</span>(<span class="ident">pl</span>) <span class="kw">if</span> <span class="ident">pl</span> <span class="op">==</span> <span class="ident">PayloadDecoder::length</span>(<span class="number">11</span>)
+        ));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
