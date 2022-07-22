@@ -994,6 +994,7 @@
 <span id="986">986</span>
 <span id="987">987</span>
 <span id="988">988</span>
+<span id="989">989</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The `Content-Disposition` header and associated types.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # References</span>
@@ -1006,9 +1007,10 @@
 <span class="doccomment">//! - Browser conformance tests at: &lt;http://greenbytes.de/tech/tc2231/&gt;</span>
 <span class="doccomment">//! - IANA assignment: &lt;http://www.iana.org/assignments/cont-disp/cont-disp.xhtml&gt;</span>
 
+<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
+
 <span class="kw">use</span> <span class="ident">once_cell::sync::Lazy</span>;
 <span class="kw">use</span> <span class="ident">regex::Regex</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">ExtendedValue</span>, <span class="ident">Header</span>, <span class="ident">TryIntoHeaderValue</span>, <span class="ident">Writer</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::http::header</span>;
