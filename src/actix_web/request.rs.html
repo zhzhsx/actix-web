@@ -1175,7 +1175,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connection_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Ref</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">ConnectionInfo</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">extensions</span>().<span class="ident">contains</span>::<span class="op">&lt;</span><span class="ident">ConnectionInfo</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ConnectionInfo::new</span>(<span class="self">self</span>.<span class="ident">head</span>(), <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">app_config</span>());
+            <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">ConnectionInfo::new</span>(<span class="self">self</span>.<span class="ident">head</span>(), <span class="self">self</span>.<span class="ident">app_config</span>());
             <span class="self">self</span>.<span class="ident">extensions_mut</span>().<span class="ident">insert</span>(<span class="ident">info</span>);
         }
 
@@ -1835,5 +1835,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (62b272d25 2022-07-21)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_web" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (848090dcd 2022-07-22)" ></div>
 </body></html>
