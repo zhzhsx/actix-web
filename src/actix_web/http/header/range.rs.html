@@ -488,7 +488,7 @@
 <span class="doccomment">/// builder.insert_header(Range::bytes(1, 100));</span>
 <span class="doccomment">/// builder.insert_header(Range::bytes_multi(vec![(1, 100), (200, 300)]));</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Range</span> {
     <span class="doccomment">/// Byte range.</span>
     <span class="ident">Bytes</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ByteRangeSpec</span><span class="op">&gt;</span>),

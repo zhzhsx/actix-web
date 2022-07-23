@@ -1034,7 +1034,7 @@
 }
 
 <span class="doccomment">/// The implied disposition of the content of the HTTP body.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DispositionType</span> {
     <span class="doccomment">/// Inline implies default processing.</span>
     <span class="ident">Inline</span>,
@@ -1076,7 +1076,7 @@
 <span class="doccomment">/// assert!(param.is_filename());</span>
 <span class="doccomment">/// assert_eq!(param.as_filename().unwrap(), &quot;sample.txt&quot;);</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::large_enum_variant</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DispositionParam</span> {
     <span class="doccomment">/// For [`DispositionType::FormData`] (i.e. *multipart/form-data*), the name of an field from</span>
@@ -1299,7 +1299,7 @@
 <span class="doccomment">/// change to match local file system conventions if applicable, and do not use directory path</span>
 <span class="doccomment">/// information that may be present.</span>
 <span class="doccomment">/// See [RFC 2183 §2.3](https://datatracker.ietf.org/doc/html/rfc2183#section-2.3).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContentDisposition</span> {
     <span class="doccomment">/// The disposition type</span>
     <span class="kw">pub</span> <span class="ident">disposition</span>: <span class="ident">DispositionType</span>,

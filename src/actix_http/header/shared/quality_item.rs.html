@@ -461,7 +461,7 @@
 
     <span class="comment">// copy of encoding from actix-web headers</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::enum_variant_names</span>)]</span> <span class="comment">// allow Encoding prefix on EncodingExt</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Encoding</span> {
         <span class="ident">Chunked</span>,
         <span class="ident">Brotli</span>,

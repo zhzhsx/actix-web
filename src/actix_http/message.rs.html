@@ -117,7 +117,7 @@
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 
 <span class="doccomment">/// Represents various types of connection</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ConnectionType</span> {
     <span class="doccomment">/// Close connection after response.</span>
     <span class="ident">Close</span>,

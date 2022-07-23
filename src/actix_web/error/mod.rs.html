@@ -324,7 +324,7 @@
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::error::BlockingError</span> {}
 
 <span class="doccomment">/// Errors which can occur when attempting to generate resource uri.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UrlGenerationError</span> {
     <span class="doccomment">/// Resource not found.</span>

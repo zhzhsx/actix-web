@@ -1644,7 +1644,7 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="doccomment">/// Chunk type yielded while decoding a payload.</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PayloadItem</span> {
     <span class="ident">Chunk</span>(<span class="ident">Bytes</span>),
@@ -1654,7 +1654,7 @@
 <span class="doccomment">/// Decoder that can handle different payload types.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// If a message body does not use `Transfer-Encoding`, it should include a `Content-Length`.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PayloadDecoder</span> {
     <span class="ident">kind</span>: <span class="ident">Kind</span>,
 }
@@ -1680,7 +1680,7 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Kind</span> {
     <span class="doccomment">/// A reader used when a `Content-Length` header is passed with a positive integer.</span>
     <span class="ident">Length</span>(<span class="ident">u64</span>),
