@@ -117,8 +117,6 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
-<span id="112">112</span>
-<span id="113">113</span>
 </pre><pre class="rust"><code><span class="doccomment">//! HTTP/2 protocol.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -224,13 +222,11 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">std::panic</span>::{<span class="ident">RefUnwindSafe</span>, <span class="ident">UnwindSafe</span>};
-
     <span class="kw">use</span> <span class="ident">static_assertions::assert_impl_all</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="macro">assert_impl_all!</span>(<span class="ident">Payload</span>: <span class="ident">Unpin</span>, <span class="ident">Send</span>, <span class="ident">Sync</span>, <span class="ident">UnwindSafe</span>, <span class="ident">RefUnwindSafe</span>);
+    <span class="macro">assert_impl_all!</span>(<span class="ident">Payload</span>: <span class="ident">Unpin</span>, <span class="ident">Send</span>, <span class="ident">Sync</span>);
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_http" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (93ffde6f0 2022-07-23)" ></div>
