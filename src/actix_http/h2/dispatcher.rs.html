@@ -351,6 +351,13 @@
 <span id="343">343</span>
 <span id="344">344</span>
 <span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cmp</span>,
     <span class="ident">error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>,
@@ -420,7 +427,7 @@
                     <span class="ident">timer</span>
                 })
                 .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Box::pin</span>(<span class="ident">sleep</span>(<span class="ident">dur</span>))),
-            <span class="ident">on_flight</span>: <span class="bool-val">false</span>,
+            <span class="ident">in_flight</span>: <span class="bool-val">false</span>,
             <span class="ident">ping_pong</span>: <span class="ident">conn</span>.<span class="ident">ping_pong</span>().<span class="ident">unwrap</span>(),
         });
 
@@ -437,9 +444,14 @@
 }
 
 <span class="kw">struct</span> <span class="ident">H2PingPong</span> {
-    <span class="ident">timer</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Sleep</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">on_flight</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Handle to send ping frames from the peer.</span>
     <span class="ident">ping_pong</span>: <span class="ident">PingPong</span>,
+
+    <span class="doccomment">/// True when a ping has been sent and is waiting for a reply.</span>
+    <span class="ident">in_flight</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Timeout for pong response.</span>
+    <span class="ident">timer</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Sleep</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">X</span>, <span class="ident">U</span><span class="op">&gt;</span> <span class="ident">Future</span> <span class="kw">for</span> <span class="ident">Dispatcher</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">X</span>, <span class="ident">U</span><span class="op">&gt;</span>
@@ -505,26 +517,28 @@
                     });
                 }
                 <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())),
+
                 <span class="ident">Poll::Pending</span> =&gt; <span class="kw">match</span> <span class="ident">this</span>.<span class="ident">ping_pong</span>.<span class="ident">as_mut</span>() {
                     <span class="prelude-val">Some</span>(<span class="ident">ping_pong</span>) =&gt; <span class="kw">loop</span> {
-                        <span class="kw">if</span> <span class="ident">ping_pong</span>.<span class="ident">on_flight</span> {
-                            <span class="comment">// When have on flight ping pong. poll pong and and keep alive timer.</span>
-                            <span class="comment">// on success pong received update keep alive timer to determine the next timing of</span>
-                            <span class="comment">// ping pong.</span>
+                        <span class="kw">if</span> <span class="ident">ping_pong</span>.<span class="ident">in_flight</span> {
+                            <span class="comment">// When there is an in-flight ping-pong, poll pong and and keep-alive</span>
+                            <span class="comment">// timer. On successful pong received, update keep-alive timer to</span>
+                            <span class="comment">// determine the next timing of ping pong.</span>
                             <span class="kw">match</span> <span class="ident">ping_pong</span>.<span class="ident">ping_pong</span>.<span class="ident">poll_pong</span>(<span class="ident">cx</span>)<span class="question-mark">?</span> {
                                 <span class="ident">Poll::Ready</span>(<span class="kw">_</span>) =&gt; {
-                                    <span class="ident">ping_pong</span>.<span class="ident">on_flight</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                                    <span class="ident">ping_pong</span>.<span class="ident">in_flight</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
                                     <span class="kw">let</span> <span class="ident">dead_line</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">config</span>.<span class="ident">keep_alive_deadline</span>().<span class="ident">unwrap</span>();
                                     <span class="ident">ping_pong</span>.<span class="ident">timer</span>.<span class="ident">as_mut</span>().<span class="ident">reset</span>(<span class="ident">dead_line</span>.<span class="ident">into</span>());
                                 }
                                 <span class="ident">Poll::Pending</span> =&gt; {
-                                    <span class="kw">return</span> <span class="ident">ping_pong</span>.<span class="ident">timer</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="ident">cx</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()))
+                                    <span class="kw">return</span> <span class="ident">ping_pong</span>.<span class="ident">timer</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="ident">cx</span>).<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
                                 }
                             }
                         } <span class="kw">else</span> {
-                            <span class="comment">// When there is no on flight ping pong. keep alive timer is used to wait for next</span>
-                            <span class="comment">// timing of ping pong. Therefore at this point it serves as an interval instead.</span>
+                            <span class="comment">// When there is no in-flight ping-pong, keep-alive timer is used to</span>
+                            <span class="comment">// wait for next timing of ping-pong. Therefore, at this point it serves</span>
+                            <span class="comment">// as an interval instead.</span>
                             <span class="macro">ready!</span>(<span class="ident">ping_pong</span>.<span class="ident">timer</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="ident">cx</span>));
 
                             <span class="ident">ping_pong</span>.<span class="ident">ping_pong</span>.<span class="ident">send_ping</span>(<span class="ident">Ping::opaque</span>())<span class="question-mark">?</span>;
@@ -532,7 +546,7 @@
                             <span class="kw">let</span> <span class="ident">dead_line</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">config</span>.<span class="ident">keep_alive_deadline</span>().<span class="ident">unwrap</span>();
                             <span class="ident">ping_pong</span>.<span class="ident">timer</span>.<span class="ident">as_mut</span>().<span class="ident">reset</span>(<span class="ident">dead_line</span>.<span class="ident">into</span>());
 
-                            <span class="ident">ping_pong</span>.<span class="ident">on_flight</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                            <span class="ident">ping_pong</span>.<span class="ident">in_flight</span> <span class="op">=</span> <span class="bool-val">true</span>;
                         }
                     },
                     <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="ident">Poll::Pending</span>,
@@ -640,13 +654,13 @@
         <span class="kw">_</span> =&gt; {}
     }
 
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">size</span> {
-        <span class="ident">BodySize::None</span> <span class="op">|</span> <span class="ident">BodySize::Stream</span> =&gt; <span class="prelude-val">None</span>,
+    <span class="kw">match</span> <span class="ident">size</span> {
+        <span class="ident">BodySize::None</span> <span class="op">|</span> <span class="ident">BodySize::Stream</span> =&gt; {}
 
         <span class="ident">BodySize::Sized</span>(<span class="number">0</span>) =&gt; {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::declare_interior_mutable_const</span>)]</span>
             <span class="kw">const</span> <span class="ident">HV_ZERO</span>: <span class="ident">HeaderValue</span> <span class="op">=</span> <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;0&quot;</span>);
-            <span class="ident">res</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_LENGTH</span>, <span class="ident">HV_ZERO</span>)
+            <span class="ident">res</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(<span class="ident">CONTENT_LENGTH</span>, <span class="ident">HV_ZERO</span>);
         }
 
         <span class="ident">BodySize::Sized</span>(<span class="ident">len</span>) =&gt; {
@@ -655,7 +669,7 @@
             <span class="ident">res</span>.<span class="ident">headers_mut</span>().<span class="ident">insert</span>(
                 <span class="ident">CONTENT_LENGTH</span>,
                 <span class="ident">HeaderValue::from_str</span>(<span class="ident">buf</span>.<span class="ident">format</span>(<span class="kw-2">*</span><span class="ident">len</span>)).<span class="ident">unwrap</span>(),
-            )
+            );
         }
     };
 
