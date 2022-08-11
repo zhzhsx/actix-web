@@ -431,8 +431,8 @@ impl<T: DeserializeOwned> Future for JsonBody<T> {
                         }
                     }
                     None => {
-                        let json = serde_json::from_slice::<T>(buf)
-                            .map_err(JsonPayloadError::Deserialize)?;
+                        // TODO：处理错误
+                        let json = simd_json::from_slice::<T>(buf.as_mut()).unwrap();
                         return Poll::Ready(Ok(json));
                     }
                 }

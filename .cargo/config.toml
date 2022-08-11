@@ -15,3 +15,5 @@ ci-doctest = "test --workspace --all-features --doc --no-fail-fast -- --nocaptur
 
 # compile docs as docs.rs would
 # RUSTDOCFLAGS="--cfg=docsrs" cargo +nightly doc --no-deps --workspace
+[build]
+rustflags = ["-C", "target-cpu=native"]
