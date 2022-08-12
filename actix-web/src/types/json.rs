@@ -368,7 +368,7 @@ impl<T: DeserializeOwned> JsonBody<T> {
             limit: DEFAULT_LIMIT,
             length,
             payload,
-            buf: BytesMut::with_capacity(8192),
+            buf: BytesMut::with_capacity(1024),
             _res: PhantomData,
         }
     }
